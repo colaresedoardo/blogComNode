@@ -27,7 +27,7 @@ router.get("/admin/categories",(req,res)=>{
     })
     
 })
-
+// delete de uma categoria
 router.post("/categories/delete",(req,res)=>{
     let id = req.body.id
 

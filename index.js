@@ -27,7 +27,11 @@ connection.authenticate().then(()=>{
 app.use("/", articlesController)
 app.use("/", categoriesController)
 app.get("/",(req,res)=>{
-    res.render("index")
+    articleModel.findAll().then(articles=>{
+        res.render("index",{articles:articles})
+    })
+
+   
     // res.send("bem vindo")
 })
 

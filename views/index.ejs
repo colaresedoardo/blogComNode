@@ -1,8 +1,29 @@
-
 <%- include("partials/header.ejs")%>
+<%- include("partials/homenavbar.ejs")%>
 
 <body>
-    fdfd
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">Bem vindo</h1>
+            <p class="lead">Blog</p>
+            <hr class="my-4">
+            <p>É para carater de aprendizagem</p>
+            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+          </div>
+
+        <% articles.forEach(article =>{ %>
+            <div class="card mt-3">
+                <div class="card-header mb-2">
+                    <h2><%= article.title%></h2>
+
+                </div>
+                <div class="card-body">
+                    <a href="#" class="btn btn-success">Ler artigo</a>
+                </div>
+
+            </div>
+        <%})%>
+    </div>
 </body>
 
 
