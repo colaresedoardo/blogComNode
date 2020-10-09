@@ -26,9 +26,19 @@ connection.authenticate().then(()=>{
 
 app.use("/", articlesController)
 app.use("/", categoriesController)
+
+// página de início
 app.get("/",(req,res)=>{
-    articleModel.findAll().then(articles=>{
-        res.render("index",{articles:articles})
+    articleModel.findAll({
+        order:[
+            ['id','DESC']
+
+        ]
+    }).then(articles=>{
+        categoryModel.findAll().then(categories =>{
+            res.render("index",{articles:articles,categories:categories})
+        })
+       
     })
 
    
@@ -36,6 +46,48 @@ app.get("/",(req,res)=>{
 })
 
 
+app.get("/:slug",(req,res)=>{
+   let slug = req.params.slug
+   articleModel.findOne({
+       where:{
+           slug:slug
+       }
+   }).then(article =>{
+       if(article != undefined){
+            categoryModel.findAll().then(categories=>{
+                res.render("article",{article:article, categories:categories})
+            })
+            
+       }else{
+           res.redirect("/")
+       }
+   }).catch(err=>{
+       res.redirect("/")
+   })
+
+   
+    // res.send("bem vindo")
+})
+
+app.get("/category/:slug",(req,res)=>{
+    let slug = req.params.slug
+    categoryModel.findOne({
+        where:{
+            slug:slug
+        }, include:[{model: articleModel}]
+    }).then(category =>{
+        if(category!=undefined){
+                categoryModel.findAll().then(categories=>{
+                    res.render("index",{articles:category.articles, categories:categories})
+                })
+        }else{
+
+        }
+    }).catch(err=>{
+        res.redirect("/")
+    })
+
+})
 
 app.listen(8000,()=>{
     console.log("Servidor está rondadndo")
